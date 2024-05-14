@@ -3,28 +3,38 @@ package vn.fpt.diamond_shop.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import vn.fpt.diamond_shop.constants.DiamondCutEnum;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Data
 @Entity
+@Table(name = "END_USER")
+@Data
 @NoArgsConstructor
-@Table(name = "CUT")
-public class Cut {
+public class EndUser {
     @Id
     @GeneratedValue(generator = "uuid-hibernate-generator")
     @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "cut", unique = true)
-    private DiamondCutEnum cut;
+    @Column(name = "full_name")
+    private String fullName;
 
-    @Column(name = "point")
-    private int point;
+    @Column(name = "is_male")
+    private boolean isMale;
+
+    @Column(name = "age")
+    private int age;
+
+    @Column(name = "account_id")
+    private UUID accountId;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     @Column(name = "create_at")
     private OffsetDateTime createAt;
@@ -32,9 +42,4 @@ public class Cut {
     @Column(name = "update_at")
     private OffsetDateTime updateAt;
 
-    public Cut(DiamondCutEnum cut, int point) {
-        this.cut = cut;
-        this.point = point;
-        this.createAt = OffsetDateTime.now();
-    }
 }

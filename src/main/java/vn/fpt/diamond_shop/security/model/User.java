@@ -1,4 +1,5 @@
 package vn.fpt.diamond_shop.security.model;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -6,7 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {
+@Table(name = "ACCOUNT", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email")
 })
 public class User {
