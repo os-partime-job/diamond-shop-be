@@ -15,20 +15,16 @@ import java.util.UUID;
 @Table(name = "CUT")
 public class Cut {
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "cut", unique = true)
     private DiamondCutEnum cut;
-
     @Column(name = "point")
     private int point;
-
     @Column(name = "create_at")
     private OffsetDateTime createAt;
-
     @Column(name = "update_at")
     private OffsetDateTime updateAt;
 

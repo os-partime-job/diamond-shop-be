@@ -7,5 +7,5 @@ import vn.fpt.diamond_shop.model.Polish;
 import java.util.UUID;
 
 @Repository
-public interface PolishRepository extends JpaRepository<Polish, UUID> {
+public interface PolishRepository extends JpaRepository<Polish, Long> {
 }

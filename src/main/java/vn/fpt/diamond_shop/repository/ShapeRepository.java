@@ -6,5 +6,5 @@ import vn.fpt.diamond_shop.model.Shape;
 
 import java.util.UUID;
 @Repository
-public interface ShapeRepository extends JpaRepository<Shape, UUID> {
+public interface ShapeRepository extends JpaRepository<Shape, Long> {
 }

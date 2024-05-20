@@ -7,23 +7,25 @@ import vn.fpt.diamond_shop.constants.*;
 import vn.fpt.diamond_shop.model.*;
 import vn.fpt.diamond_shop.repository.*;
 
-//@Component
+
+
+@Component
 @RequiredArgsConstructor
 public class InitialJob implements CommandLineRunner {
 
     private final ClarityRepository clarityRepository;
     private final ColorRepository colorRepository;
-    private final ConfigValueRepository configValueRepository;
+    //    private final ConfigValueRepository configValueRepository;
     private final CutRepository cutRepository;
     private final PolishRepository polishRepository;
     private final ShapeRepository shapeRepository;
+    private final DiamondRepository diamondRepository;
 
 
     @Override
     public void run(String... args) throws Exception {
-        initClarity();
-        initColor();
-        initCut();
+//        Optional<Diamond> option = diamondRepository.findById(UUID.fromString("31000000-0000-0000-0000-000000000000"));
+//        System.out.println(option.isPresent());
     }
 
     private void initClarity() {

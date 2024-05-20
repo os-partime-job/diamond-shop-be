@@ -7,5 +7,5 @@ import vn.fpt.diamond_shop.model.Clarity;
 import java.util.UUID;
 
 @Repository
-public interface ClarityRepository extends JpaRepository<Clarity, UUID> {
+public interface ClarityRepository extends JpaRepository<Clarity, Long> {
 }

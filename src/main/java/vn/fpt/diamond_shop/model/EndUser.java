@@ -1,40 +1,32 @@
 package vn.fpt.diamond_shop.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "END_USER")
 @Data
-@NoArgsConstructor
 public class EndUser {
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "is_male")
+    @Column(name = "age")
+    private Integer age;
+
+    @Column(name = "isMale")
     private boolean isMale;
 
-    @Column(name = "age")
-    private int age;
-
-    @Column(name = "account_id")
-    private UUID accountId;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "date_of_birth")
+    private String dateOfBirth;
 
     @Column(name = "create_at")
     private OffsetDateTime createAt;
@@ -42,4 +34,9 @@ public class EndUser {
     @Column(name = "update_at")
     private OffsetDateTime updateAt;
 
+    @Column(name = "account_id")
+    private Long accountId;
+
+    @Column(name = "address")
+    private Long address;
 }

@@ -8,14 +8,13 @@ import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "DIAMOND_SHOP_CONFIG_VALUE")
+//@Entity
+//@Table(name = "DIAMOND_SHOP_CONFIG_VALUE")
 @Data
 @NoArgsConstructor
 public class ConfigValue {
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
+//    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(name = "key", unique = true)
     private String key;

@@ -15,15 +15,14 @@ import java.util.UUID;
 public class RapaportReport {
 
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "clarity_id")
-    private UUID clarityId;
+    private Long clarityId;
 
     @Column(name = "color_id")
-    private UUID colorId;
+    private Long colorId;
 
     @Column(name = "is_active")
     private Boolean isActive;
@@ -34,13 +33,16 @@ public class RapaportReport {
     @Column(name = "cara_to")
     private int caraT;
 
+    @Column(name = "percent")
+    private Double percent;
+
     @Column(name = "create_at")
     private OffsetDateTime createAt;
 
     @Column(name = "update_at")
     private OffsetDateTime updateAt;
 
-    public RapaportReport(UUID clarityId, UUID colorId, Boolean isActive, int caraF, int caraT) {
+    public RapaportReport(Long clarityId, Long colorId, Boolean isActive, int caraF, int caraT) {
         this.clarityId = clarityId;
         this.colorId = colorId;
         this.isActive = isActive;

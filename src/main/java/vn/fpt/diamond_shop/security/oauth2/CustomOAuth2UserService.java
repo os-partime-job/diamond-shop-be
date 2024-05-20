@@ -1,10 +1,15 @@
 package vn.fpt.diamond_shop.security.oauth2;
 
+import vn.fpt.diamond_shop.model.EndUser;
+import vn.fpt.diamond_shop.repository.EndUserRepository;
+import vn.fpt.diamond_shop.repository.UserRoleRepository;
 import vn.fpt.diamond_shop.security.exception.OAuth2AuthenticationProcessingException;
 import vn.fpt.diamond_shop.security.model.AuthProvider;
+import vn.fpt.diamond_shop.security.model.RoleEnum;
 import vn.fpt.diamond_shop.security.model.User;
 import vn.fpt.diamond_shop.repository.UserRepository;
 import vn.fpt.diamond_shop.security.UserPrincipal;
+import vn.fpt.diamond_shop.security.model.UserRole;
 import vn.fpt.diamond_shop.security.oauth2.user.OAuth2UserInfo;
 import vn.fpt.diamond_shop.security.oauth2.user.OAuth2UserInfoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 @Service
@@ -24,6 +30,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
+
+    @Autowired
+    private EndUserRepository endUserRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -41,15 +53,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
-        if(StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
+        if (StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
             throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
         }
 
         Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
         User user;
-        if(userOptional.isPresent()) {
+        if (userOptional.isPresent()) {
             user = userOptional.get();
-            if(!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
+            if (!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
                 throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
                         user.getProvider() + " account. Please use your " + user.getProvider() +
                         " account to login.");
@@ -70,7 +82,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
-        return userRepository.save(user);
+
+        User result = userRepository.save(user);
+
+        UserRole userRole = new UserRole();
+        userRole.setRoleId(RoleEnum.END_USER.getId());
+        userRole.setAccountId(result.getId());
+        userRoleRepository.save(userRole);
+
+        EndUser endUser = new EndUser();
+        endUser.setCreateAt(OffsetDateTime.now());
+        endUser.setAccountId(result.getId());
+        endUserRepository.save(endUser);
+
+        return result;
     }
 
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {

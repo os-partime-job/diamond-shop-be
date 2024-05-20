@@ -16,15 +16,14 @@ import java.util.UUID;
 public class Shape {
 
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "shape", unique = true)
     private DiamondShapeEnum shape;
 
     @Column(name = "image")
-    private UUID imageMetadata;
+    private Long imageMetadata;
 
     @Column(name = "create_at")
     private OffsetDateTime createAt;

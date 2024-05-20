@@ -7,5 +7,5 @@ import vn.fpt.diamond_shop.model.Cut;
 import java.util.UUID;
 
 @Repository
-public interface CutRepository extends JpaRepository<Cut, UUID> {
+public interface CutRepository extends JpaRepository<Cut, Long> {
 }

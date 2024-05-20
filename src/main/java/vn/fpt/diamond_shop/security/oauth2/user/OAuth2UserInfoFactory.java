@@ -11,9 +11,11 @@ public class OAuth2UserInfoFactory {
         if(registrationId.equalsIgnoreCase(AuthProvider.google.toString())) {
             return new GoogleOAuth2UserInfo(attributes);
         } else if (registrationId.equalsIgnoreCase(AuthProvider.facebook.toString())) {
-            return new FacebookOAuth2UserInfo(attributes);
+//            return new FacebookOAuth2UserInfo(attributes);
+            return null;
         } else if (registrationId.equalsIgnoreCase(AuthProvider.github.toString())) {
-            return new GithubOAuth2UserInfo(attributes);
+//            return new GithubOAuth2UserInfo(attributes);
+            return null;
         } else {
             throw new OAuth2AuthenticationProcessingException("Sorry! Login with " + registrationId + " is not supported yet.");
         }

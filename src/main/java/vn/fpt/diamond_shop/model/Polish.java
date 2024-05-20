@@ -7,7 +7,6 @@ import vn.fpt.diamond_shop.constants.DiamondPolishEnum;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -15,9 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Polish {
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "polish", unique = true)

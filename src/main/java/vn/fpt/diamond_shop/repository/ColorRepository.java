@@ -7,5 +7,5 @@ import vn.fpt.diamond_shop.model.Color;
 import java.util.UUID;
 
 @Repository
-public interface ColorRepository extends JpaRepository<Color, UUID> {
+public interface ColorRepository extends JpaRepository<Color, Long> {
 }
