@@ -3,20 +3,23 @@ package vn.fpt.diamond_shop.service.Impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import vn.fpt.diamond_shop.model.Jewelry;
 import vn.fpt.diamond_shop.model.JewelryType;
 import vn.fpt.diamond_shop.repository.JewelryRepository;
 import vn.fpt.diamond_shop.repository.JewelryTypeRepository;
 import vn.fpt.diamond_shop.request.CreateDiamondRequest;
 import vn.fpt.diamond_shop.request.GetListJewelryRequest;
-import vn.fpt.diamond_shop.response.GetDetailJewelryResponse;
-import vn.fpt.diamond_shop.response.ImageInformation;
-import vn.fpt.diamond_shop.service.ImageService;
+import vn.fpt.diamond_shop.response.*;
 import vn.fpt.diamond_shop.service.JewelryService;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -36,14 +39,28 @@ public class JewelryServiceImpl implements JewelryService {
     private ImageServiceImpl imageService;
 
     @Override
-    public List<Jewelry> jewelries(GetListJewelryRequest request) {
-        return jewelryRepository.findAll();
+    public ResponseEntity<Object> jewelries(GetListJewelryRequest request) {
+        List<GetListJewelryResponse>jewelries = new ArrayList<>();
+        if(request.getLimit() == null){
+            request.setLimit(10);
+        }
+        if(request.getOffset() == null){
+            request.setOffset(0);
+        }
+        Page<GetListJewelryResponse> jewelriesPage =  jewelryRepository.getListJewelry(request.getJewelryTypeId(), PageRequest.of(request.getOffset(), request.getLimit(), Sort.by(Sort.Direction.DESC, "id")));
+        jewelries = jewelriesPage.getContent();
+        Meta meta = new Meta(request.getRequestId(), 200, "success", HttpStatus.OK.toString());
+        meta.setLimit(request.getLimit());
+        meta.setOffset(request.getOffset());
+        meta.setTotal(Integer.valueOf(String.valueOf(jewelriesPage.getTotalElements()))) ;
+        BaseResponse response = new BaseResponse(meta,jewelries);
+
+        return ResponseEntity.ok(response);
     }
 
     @Override
     public GetDetailJewelryResponse detailJewelry(Long id) {
-        return null;
-//        return jewelryRepository.getDetailJewelry(id);
+        return jewelryRepository.getDetailJewelry(id);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class JewelryController extends BaseController {
 
     @PostMapping("list")
     public ResponseEntity<Object> list(@Valid @RequestBody GetListJewelryRequest request) {
-        return ok(jewelryService.jewelries(request), null);
+        return jewelryService.jewelries(request);
     }
 
     @PostMapping("detail")
@@ -44,8 +44,4 @@ public class JewelryController extends BaseController {
         request.setMultipartFile(file);
         return ok(jewelryService.createJewelry(request), null);
     }
-//    @PostMapping("upload/file")
-//    public ResponseEntity<Object> uploadFile(@RequestParam("image") MultipartFile file) {
-//        return ok(imageService.push(file), null);
-//    }
 }

@@ -18,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class GetDetailJewelryResponse {
     private Long idJewelry;
+
     private String jewelryTitle;
 
     private String jewelryCode;
@@ -28,21 +29,17 @@ public class GetDetailJewelryResponse {
 
     private Integer quantity;
 
-    private Double price;
-
-    private Date createdAt;
-
-    private String createdBy;
-
-    private Date updatedAt;
-
-    private String updatedBy;
+    private Long price;
 
     private String description;
 
     private Long imageId;
 
-    private Integer typeEnum;
+    private String url;
+
+    private Integer idGuide;
 
     private Long diamondId;
+
+    private Float goldWeight;
 }

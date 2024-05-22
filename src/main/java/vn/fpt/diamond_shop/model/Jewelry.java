@@ -31,7 +31,7 @@ public class Jewelry {
     private Integer quantity;
 
     @Column(name = "material_prices")
-    private Double materialPrices;
+    private Long materialPrices;
 
     @Column(name = "id_guide")
     private Long idGuide;
@@ -60,4 +60,6 @@ public class Jewelry {
     @Column(name = "image_id")
     private Long imageId;
 
+    @Column(name = "gold_weight")
+    private Float goldWeight;
 }

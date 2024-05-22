@@ -56,7 +56,7 @@ public class AdminServiceImpl implements AdminService {
 
         users.forEach(e -> {
             UserRole role = userRoleRepository.findAllByAccountId(e.getId()).get(0);
-            RoleEnum roleEnum = RoleEnum.getRoleEnumById(role.getId());
+            RoleEnum roleEnum = RoleEnum.getRoleEnumById(role.getRoleId());
             if (!e.getId().equals(userPrincipal.getId())) {
                 responses.add(new ManagerListAccountResponse(
                         e.getId(),

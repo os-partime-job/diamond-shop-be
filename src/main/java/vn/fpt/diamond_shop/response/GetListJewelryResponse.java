@@ -6,44 +6,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-import java.util.UUID;
-
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @AllArgsConstructor
 @NoArgsConstructor
-//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetListJewelryResponse {
-    private Integer idJewelry;
-    private String jewelryTitle;// name
+    private Long idJewelry;
 
-    private String jewelryCode;
+    private String jewelryTitle;
 
     private String jewelryType;
 
-    private Integer jewelryTypeId;
+    private Long jewelryTypeId;
 
     private Integer quantity;
 
-    private Double price;
-
-    private Date createdAt;
-
-    private String createdBy;
-
-    private Date updatedAt;
-
-    private String updatedBy;
-
-    private String description;
+    private Long price;
 
     private Long imageId;
 
-    private Integer typeEnum;
-
-    private Long diamondId;
-
-
+    private String url;
 }
