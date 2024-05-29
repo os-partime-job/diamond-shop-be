@@ -30,18 +30,19 @@ public class JewelryController extends BaseController {
 
     @PostMapping("detail")
     public ResponseEntity<Object> detail(@Valid @RequestBody GetDetailJewelryRequest request) {
-        return ok(jewelryService.detailJewelry(request.getIdJewelry()), request.getRequestId());
+        return ok(jewelryService.detailJewelry(request.getIdJewelry()));
     }
 
     @GetMapping("jewelry_type")
     public ResponseEntity<Object> type() {
-        return ok(jewelryService.jewelryType(), null);
+        return ok(jewelryService.jewelryType());
     }
 
     @PostMapping(value = "create", consumes = {"multipart/form-data"})
     public ResponseEntity<Object> create(@RequestPart("request") CreateDiamondRequest request,
                                          @RequestPart("image") MultipartFile file) {
         request.setMultipartFile(file);
-        return ok(jewelryService.createJewelry(request), null);
+        return ok(jewelryService.createJewelry(request));
     }
+
 }

@@ -1,14 +1,14 @@
-FROM eclipse-temurin:17-jdk-focal as build
-WORKDIR /build
+FROM maven:3.6-jdk-11 as build
 
-COPY .mvn/ ./.mvn
-COPY mvnw pom.xml  ./
-RUN ./mvnw dependency:go-offline
-
+ENV HOME=/opt/src/app
+WORKDIR $HOME
+ADD pom.xml $HOME
+RUN ["/usr/local/bin/mvn-entrypoint.sh", "mvn", "verify", "clean", "--fail-never"]
 COPY . .
-RUN ./mvnw package -DskipTests
+RUN ["mvn", "package"]
 
-FROM eclipse-temurin:17-jdk-alpine as run
-WORKDIR /app
-COPY --from=build /build/target/*.jar run.jar
-ENTRYPOINT ["java", "-jar", "/app/run.jar"]
+FROM openjdk:11-jdk
+ENV TZ="Asia/Ho_Chi_Minh"
+COPY --from=build opt/src/app/target/*.jar diamond_shop-0.0.1-SNAPSHOT.jar
+
+ENTRYPOINT ["java","-jar","diamond_shop-0.0.1-SNAPSHOT.jar"]

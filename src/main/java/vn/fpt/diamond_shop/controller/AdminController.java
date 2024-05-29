@@ -15,12 +15,12 @@ public class AdminController extends BaseController {
 
     @GetMapping("/account")
     private ResponseEntity<?> listAccount() {
-        return ok(adminService.listAccount(), null);
+        return ok(adminService.listAccount());
     }
 
     @PutMapping("/account/modify")
     private ResponseEntity<?> modify(@RequestBody ManagerModifyAccountRequest request) {
         adminService.changeInforAccount(request);
-        return ok("Change account success", null);
+        return ok("Change account success");
     }
 }

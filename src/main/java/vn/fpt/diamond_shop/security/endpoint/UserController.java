@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.fpt.diamond_shop.controller.BaseController;
+import vn.fpt.diamond_shop.model.ChangePasswordRequest;
 import vn.fpt.diamond_shop.request.ChangeProfileRequest;
 import vn.fpt.diamond_shop.security.AccountService;
 import vn.fpt.diamond_shop.security.exception.ResourceNotFoundException;
@@ -35,7 +36,7 @@ public class UserController extends BaseController {
 
         changeProfileRequest.setEmail(user.getEmail());
         accountService.changeProfile(changeProfileRequest);
-        return ok("Change profile successfully", null);
+        return ok("Change profile successfully");
     }
 
     @PostMapping("/change-profile/avt")
@@ -44,12 +45,18 @@ public class UserController extends BaseController {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
 
         accountService.updateAvt(user.getId(), file);
-        return ok("Update avatar successfully", null);
+        return ok("Update avatar successfully");
     }
 
     @GetMapping
     public ResponseEntity<?> getAllUser(@CurrentUser UserPrincipal userPrincipal) {
-        return ok(accountService.profile(userPrincipal.getId()), null);
+        return ok(accountService.profile(userPrincipal.getId()));
+    }
+
+    @PutMapping("/change-pass")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request) {
+        accountService.changePass(request);
+        return ok("Change password success");
     }
 
 }

@@ -56,7 +56,7 @@ public class AuthController extends BaseController {
 
         accountService.register(signUpRequest);
 
-        return ok("User registered successfully", null);
+        return ok("User registered successfully");
     }
 
 }

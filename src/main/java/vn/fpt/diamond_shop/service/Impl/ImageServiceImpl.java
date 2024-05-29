@@ -14,6 +14,7 @@ import vn.fpt.diamond_shop.util.UUIDUtil;
 
 import javax.annotation.PostConstruct;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -40,7 +41,7 @@ public class ImageServiceImpl implements ImageService {
         try {
             ImageInformation imageInformation = new ImageInformation();
             String uuid = UUIDUtil.generateUUID();
-            String imageName = multipartFile.getOriginalFilename() + uuid;
+            String imageName = multipartFile.getOriginalFilename() + "." + uuid;
             minioClient.putObject(PutObjectArgs.builder().bucket(bucket).stream(multipartFile.getInputStream(), multipartFile.getSize(), -1).object(imageName).contentType(multipartFile.getContentType()).build());
             String feImgUrl = get(imageName);
             imageInformation.setImageName(imageName);
@@ -63,7 +64,7 @@ public class ImageServiceImpl implements ImageService {
 
     private String get(String imageFile) {
         try {
-            return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder().bucket(bucket).object(imageFile).method(Method.GET).build());
+            return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder().bucket(bucket).expiry(90, TimeUnit.DAYS).object(imageFile).method(Method.GET).build());
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -84,10 +85,8 @@ public class ImageServiceImpl implements ImageService {
     }
 
 //    public static void main(String[] args) throws Exception {
-//        String path = "C:\\Users\\Thanh Dev\\Desktop\\diamond-shop-api\\src\\main\\resources\\images\\img.png";
-//        InputStream inputStream = Files.newInputStream(Paths.get(path));
 //        MinioClient minioClient1 = MinioClient.builder().endpoint("http://178.128.111.191:9000").credentials("LhvzlYoqSbl1Go3U2tRF", "muIyi1QKM27OXxLofmCUk4C8cR82Qe9N7Ess2M6R").build();
-//        minioClient1.putObject(PutObjectArgs.builder().contentType("images/png").bucket("diamondshop").stream(inputStream, Files.size(Paths.get(path)), -1).object("test1.png").build());
-////        System.out.println(minioClient1.getObject(GetObjectArgs.builder().bucket("diamondshop").object("test.png").build()).readAllBytes().length);
+////        minioClient1.putObject(PutObjectArgs.builder().contentType("images/png").bucket("diamondshop").stream(inputStream, Files.size(Paths.get(path)), -1).object("test1.png").build());
+//        System.out.println(minioClient1.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder().bucket("diamondshop").expiry(6, TimeUnit.DAYS).object("T1_Faker_2024_Split_1.webp4b9hR4VG2OOaTBi0mjWKrJ").method(Method.GET).build()));
 //    }
 }
