@@ -1,11 +1,9 @@
 package vn.fpt.diamond_shop.constants;
 
 public enum StatusOrder {
-    INIT("order",0),
-    CREATE_PAYMENT("watting payment",1),
-    PAYMENT("payment",2),
-    DELIVERY("delivery",3),
-    DONE("success",4),
+    INIT("Khởi tạo",0),
+    CREATE_PAYMENT("Tạo mã thanh toán",1),
+    PAYMENT("Thanh toán",0)
     ;
 
 
@@ -31,5 +29,4 @@ public enum StatusOrder {
     public void setCode(int code) {
         this.code = code;
     }
-
 }

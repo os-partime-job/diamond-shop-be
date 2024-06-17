@@ -29,7 +29,7 @@ public class RenewImageJob {
 
     public void renewImageTask() {
         List<Image> images = imageRepository.findAll();
-        images.parallelStream().forEach(e -> {
+        images.forEach(e -> {
             try {
                 ImageInformation imageInformation = imageService.get(e.getImageName());
                 e.setUrl(imageInformation.getUrl());

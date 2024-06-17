@@ -9,6 +9,4 @@ import java.util.Optional;
 @Repository
 public interface EndUserRepository extends JpaRepository<EndUser, Long> {
     Optional<EndUser> findEndUserByAccountId(Long accountId);
-
-    EndUser findEndUserByPhoneNumber(String phoneNumber);
 }

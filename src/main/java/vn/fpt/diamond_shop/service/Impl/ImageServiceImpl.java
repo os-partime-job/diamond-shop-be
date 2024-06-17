@@ -69,7 +69,7 @@ public class ImageServiceImpl implements ImageService {
 
     private String getImg(String imageFile) {
         try {
-            return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder().bucket(bucket).expiry(7, TimeUnit.DAYS).object(imageFile).method(Method.GET).build());
+            return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder().bucket(bucket).expiry(90, TimeUnit.DAYS).object(imageFile).method(Method.GET).build());
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -89,9 +89,9 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-//    public static void main(String[] args) throws Exception {
-//        MinioClient minioClient1 = MinioClient.builder().endpoint("http://178.128.111.191:9000").credentials("LhvzlYoqSbl1Go3U2tRF", "muIyi1QKM27OXxLofmCUk4C8cR82Qe9N7Ess2M6R").build();
-////        minioClient1.putObject(PutObjectArgs.builder().contentType("images/png").bucket("diamondshop").stream(inputStream, Files.size(Paths.get(path)), -1).object("test1.png").build());
-//        System.out.println(minioClient1.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder().bucket("diamondshop").expiry(6, TimeUnit.DAYS).object("T1_Faker_2024_Split_1.webp4b9hR4VG2OOaTBi0mjWKrJ").method(Method.GET).build()));
-//    }
+    public static void main(String[] args) throws Exception {
+        MinioClient minioClient1 = MinioClient.builder().endpoint("http://178.128.111.191:9000").credentials("LhvzlYoqSbl1Go3U2tRF", "muIyi1QKM27OXxLofmCUk4C8cR82Qe9N7Ess2M6R").build();
+//        minioClient1.putObject(PutObjectArgs.builder().contentType("images/png").bucket("diamondshop").stream(inputStream, Files.size(Paths.get(path)), -1).object("test1.png").build());
+        System.out.println(minioClient1.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder().bucket("diamondshop").expiry(6, TimeUnit.DAYS).object("T1_Faker_2024_Split_1.webp4b9hR4VG2OOaTBi0mjWKrJ").method(Method.GET).build()));
+    }
 }
