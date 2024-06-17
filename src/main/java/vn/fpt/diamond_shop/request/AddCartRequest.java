@@ -17,4 +17,5 @@ public class AddCartRequest extends BaseRequest{
     private Long jewelryId;
     private Integer quantity;
     private String status;
+    private String phoneNumber;
 }
