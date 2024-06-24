@@ -61,5 +61,5 @@ minio:
 
 springdoc:
   swagger-ui:
-    config-url: /v1/swagger
+    config-url: /v1/swagger.html
     disable-swagger-default-url: true
