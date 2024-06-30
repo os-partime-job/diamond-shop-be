@@ -66,7 +66,7 @@ public class CouponServiceImpl implements CouponService {
         Coupon coupon = couponRepository.findByCouponsCode(couponCode.toUpperCase())
                 .orElseThrow(() -> new RuntimeException("Coupon not found"));
 
-        if (coupon.getExpirationDate().before(new java.util.Date())) {
+        if (coupon.getExpirationDate().before(new Date())) {
             throw new DiamondShopException("Coupon expired");
         }
         if (coupon.getQuantity() <= 0) {

@@ -40,9 +40,9 @@ public class OrderController extends BaseController {
 
     @PostMapping("detail")
     @LogActivities
-    public ResponseEntity<Object> detail(@CurrentUser UserPrincipal userPrincipal, @Valid @RequestBody GetListOrderRequest request) {
+    public ResponseEntity<Object> detail(@CurrentUser UserPrincipal userPrincipal, @Valid @RequestBody GetOrderDetailRequest request) {
         request.setCustomerId(userPrincipal == null ? null : userPrincipal.getId());
-        return orderService.orderList(request);
+        return ok(orderService.detail(request));
     }
 
     @PostMapping("update")
@@ -57,5 +57,17 @@ public class OrderController extends BaseController {
     public ResponseEntity<Object> listAllUser(@CurrentUser UserPrincipal userPrincipal, @Valid @RequestBody GetListOrderRequest request) {
         request.setCustomerId(userPrincipal == null ? null : userPrincipal.getId());
         return orderService.orderListAllUser(request);
+    }
+
+    @GetMapping("post-order")
+    @LogActivities
+    public ResponseEntity<Object> getInfoPostOrder(@CurrentUser UserPrincipal userPrincipal) {
+        return ok(orderService.preorderDetail(userPrincipal));
+    }
+    @GetMapping("dashboard")
+    @LogActivities
+    public ResponseEntity<Object> getDashboard() {
+//        request.setCustomerId(userPrincipal == null ? null : userPrincipal.getId());
+        return ok(orderService.dashboard());
     }
 }

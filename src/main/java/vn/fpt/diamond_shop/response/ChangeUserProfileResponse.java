@@ -1,16 +1,9 @@
-package vn.fpt.diamond_shop.request;
+package vn.fpt.diamond_shop.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class ChangeProfileRequest {
+@Data
+public class ChangeUserProfileResponse {
     private String email;
     private String phoneNumber;
     private String password;

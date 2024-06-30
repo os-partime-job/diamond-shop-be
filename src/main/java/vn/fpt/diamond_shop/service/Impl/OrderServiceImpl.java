@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import vn.fpt.diamond_shop.constants.StatusOrder;
@@ -16,6 +17,9 @@ import vn.fpt.diamond_shop.model.*;
 import vn.fpt.diamond_shop.repository.*;
 import vn.fpt.diamond_shop.request.*;
 import vn.fpt.diamond_shop.response.*;
+import vn.fpt.diamond_shop.security.model.User;
+import vn.fpt.diamond_shop.security.AccountService;
+import vn.fpt.diamond_shop.security.UserPrincipal;
 import vn.fpt.diamond_shop.service.OrderService;
 import vn.fpt.diamond_shop.util.UUIDUtil;
 
@@ -47,6 +51,8 @@ public class OrderServiceImpl implements OrderService {
     private UserRepository userRepository;
     @Autowired
     private DeliveryRepository deliveryRepository;
+    @Autowired
+    private AccountService accountService;
 
     @Override
     public ResponseEntity<Object> orderList(GetListOrderRequest request) {
@@ -100,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
             for(Cart cart : cartsById){
                 //insert order detail
                 OrderDetail orderDetail = new OrderDetail();
-                orderDetail.setOrderDate(new java.util.Date());
+                orderDetail.setOrderDate(new Date());
                 orderDetail.setCreatedAt(new Date());
                 orderDetail.setJewelryId(cart.getJewelryId());
                 orderDetail.setCustomerId(cart.getUserId());
@@ -161,7 +167,7 @@ public class OrderServiceImpl implements OrderService {
             if (byCustomerIdAndAndJewelryId != null) {
                 //update
                 byCustomerIdAndAndJewelryId.setQuantity(byCustomerIdAndAndJewelryId.getQuantity() + request.getQuantity());
-                byCustomerIdAndAndJewelryId.setUpdatedAt(new java.util.Date());
+                byCustomerIdAndAndJewelryId.setUpdatedAt(new Date());
                 cartRepository.updateByUserIdAndJewelryId(request.getCustomerId(), request.getJewelryId(), byCustomerIdAndAndJewelryId.getQuantity(), byCustomerIdAndAndJewelryId.getUpdatedAt(), byCustomerIdAndAndJewelryId.getStatus(), request.getSize());
             } else {
                 //insert
@@ -169,7 +175,7 @@ public class OrderServiceImpl implements OrderService {
                 cart.setJewelryId(request.getJewelryId());
                 cart.setQuantity(request.getQuantity());
                 cart.setUserId(request.getCustomerId());
-                cart.setCreatedAt(new Date(new java.util.Date().getTime()));
+                cart.setCreatedAt(new Date(new Date().getTime()));
                 cart.setStatus(ACTIVE_CART);
                 cart.setSize(request.getSize());
                 cartRepository.save(cart);
@@ -191,7 +197,7 @@ public class OrderServiceImpl implements OrderService {
         if(byCustomerIdAndAndJewelryId != null){
             //update
             byCustomerIdAndAndJewelryId.setQuantity(byCustomerIdAndAndJewelryId.getQuantity() + request.getQuantity());
-            byCustomerIdAndAndJewelryId.setUpdatedAt(new java.util.Date());
+            byCustomerIdAndAndJewelryId.setUpdatedAt(new Date());
             byCustomerIdAndAndJewelryId.setSize(request.getSize());
             if(!StringUtils.isEmpty(request.getStatus())){
                 byCustomerIdAndAndJewelryId.setStatus(request.getStatus());
@@ -223,7 +229,7 @@ public class OrderServiceImpl implements OrderService {
         Meta meta = new Meta(request.getRequestId(), 200, "success", HttpStatus.OK.toString());
         BaseResponse response = new BaseResponse(meta, ordersListAllUsers);
 
-        return response;
+        return ordersListAllUsers;
     }
 
     @Override
@@ -259,8 +265,8 @@ public class OrderServiceImpl implements OrderService {
         Meta meta = new Meta(request.getRequestId(), 200, "success", HttpStatus.OK.toString());
         meta.setLimit(request.getLimit());
         meta.setOffset(request.getOffset());
-        meta.setTotal(Integer.valueOf(String.valueOf(ordersPage.getTotalElements()))) ;
-        BaseResponse response = new BaseResponse(meta,ordersListAllUsers);
+        meta.setTotal(Integer.valueOf(String.valueOf(ordersPage.getTotalElements())));
+        BaseResponse response = new BaseResponse(meta, ordersListAllUsers);
 
         return ResponseEntity.ok(response);
     }
@@ -272,4 +278,36 @@ public class OrderServiceImpl implements OrderService {
 //        ordersRepository.findAllOrderByOrderByCreatedAtDesc()
         return null;
     }
+
+    @Override
+    public Object preorderDetail(UserPrincipal userPrincipal) {
+        PreOrderDetailResponse preOrderDetailResponse = new PreOrderDetailResponse();
+        preOrderDetailResponse.setUserProfile(accountService.profile(userPrincipal.getId()));
+        return preOrderDetailResponse;
+    }
+    @Override
+    public DashboardResponse dashboard() {
+        DashboardResponse dashboardResponse = new DashboardResponse();
+
+        DashboardResponse.OrdersData ordersData = new DashboardResponse.OrdersData();
+        ordersData.setTotalOrder(ordersRepository.findAll().size());
+        ordersData.setOrderInit(ordersRepository.findAllOrderByStatusOrderByCreatedAtDesc(StatusOrder.INIT.getValue()).size());
+        ordersData.setOrderWaitPayment(ordersRepository.findAllOrderByStatusOrderByCreatedAtDesc(StatusOrder.CREATE_PAYMENT.getValue()).size());
+        ordersData.setOrderDelivery(ordersRepository.findAllOrderByStatusOrderByCreatedAtDesc(StatusOrder.DELIVERY.getValue()).size());
+        ordersData.setOrderSuccess(ordersRepository.findAllOrderByStatusOrderByCreatedAtDesc(StatusOrder.DONE.getValue()).size());
+        ordersData.setOrderCancel(ordersRepository.findAllOrderByStatusOrderByCreatedAtDesc(StatusOrder.CANCEL.getValue()).size());
+
+        DashboardResponse.RevenueData revenueData = new DashboardResponse.RevenueData();
+        revenueData.setPriceInit(ordersRepository.getTotalStatusAmount(StatusOrder.INIT.getValue()));
+        revenueData.setPriceWaitPayment(ordersRepository.getTotalStatusAmount(StatusOrder.CREATE_PAYMENT.getValue()));
+        revenueData.setPriceDelivery(ordersRepository.getTotalStatusAmount(StatusOrder.DELIVERY.getValue()));
+        revenueData.setPriceSuccess(ordersRepository.getTotalStatusAmount(StatusOrder.DONE.getValue()));
+        revenueData.setPriceCancel(ordersRepository.getTotalStatusAmount(StatusOrder.CANCEL.getValue()));
+        revenueData.setTotalPrice(ordersRepository.getTotalStatusAmount(null));
+
+        dashboardResponse.setRevenueData(revenueData);
+        dashboardResponse.setOrderInfo(ordersData);
+        return dashboardResponse;
+    }
+
 }

@@ -23,6 +23,9 @@ public class Shape {
     @Enumerated(EnumType.STRING)
     private DiamondShapeEnum shape;
 
+    @Column(name = "added_price")
+    private int addedPrice;
+
     @Column(name = "image")
     private Long imageMetadata;
 

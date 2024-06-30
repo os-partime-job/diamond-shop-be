@@ -23,6 +23,8 @@ public class Cut {
     private DiamondCutEnum cut;
     @Column(name = "point")
     private int point;
+    @Column(name = "added_price")
+    private int addedPrice;
     @Column(name = "create_at")
     private OffsetDateTime createAt;
     @Column(name = "update_at")

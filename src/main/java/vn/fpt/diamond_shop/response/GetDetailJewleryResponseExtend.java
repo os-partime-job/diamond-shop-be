@@ -6,15 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetListJewelryResponse {
+public class GetDetailJewleryResponseExtend {
     private Long idJewelry;
 
     private String jewelryTitle;
+
+    private String jewelryCode;
 
     private String jewelryType;
 
@@ -24,9 +25,35 @@ public class GetListJewelryResponse {
 
     private Long price;
 
+    private String description;
+
     private Long imageId;
 
     private String url;
 
-    private String description;
+    private Integer idGuide;
+
+    private Long diamondId;
+
+    private Float goldWeight;
+
+    private String diamondColor;
+
+    private String diamondClarity;
+
+    private String diamondCut;
+
+    private String diamondShape;
+
+    private String diamondPolish;
+
+    private String diamondOrigin;
+
+    private int originPrice;
+
+    private int polishedPrice;
+
+    private int cutPrice;
+
+    private int rapaportPrice;
 }

@@ -58,8 +58,3 @@ minio:
   host: http://178.128.111.191:9000
   accessKey: LhvzlYoqSbl1Go3U2tRF
   secretKey: muIyi1QKM27OXxLofmCUk4C8cR82Qe9N7Ess2M6R
-
-springdoc:
-  swagger-ui:
-    config-url: /v1/swagger.html
-    disable-swagger-default-url: true

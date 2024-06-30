@@ -24,4 +24,9 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
     @Query("SELECT SUM(o.totalPrice) FROM Orders o WHERE o.customerId = :customerId AND o.status = :status")
     Long getCustomerAmount(Long customerId, String status);
+
+    List<Orders> findAllOrderByStatusOrderByCreatedAtDesc(String status);
+
+    @Query("SELECT SUM(o.totalPrice) FROM Orders o WHERE  1= 1 AND (:status is null or o.status = :status)")
+    Long getTotalStatusAmount(String status);
 }
